@@ -1,3 +1,24 @@
-* {
+$background: rgba(34, 34, 34, 0.75);
+$border: rgba(0, 0, 0, 1);
 
+.tagging-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  .tagging-element {
+    position: absolute;
+    border-radius: 5px;
+    background-color: $background;
+    opacity: 0.9;
+    .title {
+      padding: 5px 15px;
+      display: inline-block;
+    }
+    .delete {
+      display: inline-block;
+      height: 100%;
+      padding: 5px;
+      border-left: 2px solid $border;
+    }
+  }
 }
