@@ -9,6 +9,7 @@
     opacity: 0.9;
     border: 1px solid black; }
     .tagging-wrapper .tagging-element.grab-mode {
+      z-index: 16777271 !important;
       cursor: -webkit-grab;
       cursor: grab; }
     .tagging-wrapper .tagging-element .title {
