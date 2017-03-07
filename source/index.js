@@ -61,12 +61,57 @@ export default class Tagging extends PureComponent {
             width: this.props.width,
             height: this.props.height,
           }}
+          ref='tagging-wrapper'
           onClick={() => {
             this.setState({chosenIndex: null});
           }}
         >
           {this.props.tags.map((tag, index) => {
+            // closure veriables
             let canMove = false;
+            let startMoving = event => {
+              canMove = true;
+            };
+            let processMoving = event => {
+              if (canMove && this.state.chosenIndex === index) {
+                let ref = ReactDOM.findDOMNode(this.refs[index]);
+                if (ref) {
+                  let wrapper = ReactDOM.findDOMNode(this.refs['tagging-wrapper']).getBoundingClientRect(),
+                    boundingClientRect = ref.getBoundingClientRect();
+                  ref.style.cursor = '-webkit-grabbing';
+                  ref.style.cursor = 'grabbing';
+                  // handle borders
+                  if (wrapper.left + boundingClientRect.width / 2 > event.pageX) {
+                    tag.x = 0;
+                  } else if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.pageX) {
+                    tag.x = wrapper.width - boundingClientRect.width;
+                  } else {
+                    tag.x = parseFloat(ref.style.left) + event.pageX - (boundingClientRect.left + boundingClientRect.width / 2);
+                  }
+                  if (wrapper.top + boundingClientRect.height / 2 > event.pageY) {
+                    tag.y = 0;
+                  } else if (wrapper.top + wrapper.height - boundingClientRect.height / 2 < event.pageY) {
+                    tag.y = wrapper.height - boundingClientRect.height;
+                  } else {
+                    tag.y = parseFloat(ref.style.top) + event.pageY - (boundingClientRect.top + boundingClientRect.height / 2);
+                  }
+                  ref.style.left = tag.x + 'px';
+                  ref.style.top = tag.y + 'px';
+                }
+              }
+            };
+            let stopMoving = event => {
+              let ref = ReactDOM.findDOMNode(this.refs[index]);
+              ref.style.cursor = '';
+              this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
+                if (ind === index) {
+                  tag.x = parseFloat(ref.style.left);
+                  tag.y = parseFloat(ref.style.top);
+                }
+                return tag;
+              }));
+              canMove = false;
+            };
             return (
               <div
                 className={`tagging-element ${this.state.chosenIndex === index ? 'grab-mode' : ''}`}
@@ -81,46 +126,10 @@ export default class Tagging extends PureComponent {
                   event.stopPropagation();
                   this.setState({chosenIndex: index});
                 }}
-                onMouseDown={event => {
-                  canMove = true;
-                }}
-                onMouseMove={event => {
-                  if (canMove && this.state.chosenIndex === index) {
-                    let ref = ReactDOM.findDOMNode(this.refs[index]);
-                    if (ref) {
-                      let boundingClientRect = ref.getBoundingClientRect(),
-                        clientRects = ref.getClientRects()[0];
-                      ref.style.cursor = '-webkit-grabbing';
-                      ref.style.cursor = 'grabbing';
-                      ref.style.left = parseFloat(ref.style.left) + event.pageX - (boundingClientRect.left + clientRects.width / 2) + 'px';
-                      ref.style.top = parseFloat(ref.style.top) + event.pageY - (boundingClientRect.top + clientRects.height / 2) + 'px';
-                    }
-                  }
-                }}
-                onMouseUp={event => {
-                  canMove = false;
-                  let ref = ReactDOM.findDOMNode(this.refs[index]);
-                  ref.style.cursor = '';
-                  this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
-                    if (ind === index) {
-                      tag.x = parseFloat(ref.style.left);
-                      tag.y = parseFloat(ref.style.top);
-                    }
-                    return tag;
-                  }));
-                }}
-                onMouseLeave={event => {
-                  canMove = false;
-                  let ref = ReactDOM.findDOMNode(this.refs[index]);
-                  ref.style.cursor = '';
-                  this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
-                    if (ind === index) {
-                      tag.x = parseFloat(ref.style.left);
-                      tag.y = parseFloat(ref.style.top);
-                    }
-                    return tag;
-                  }));
-                }}
+                onMouseDown={startMoving}
+                onMouseMove={processMoving}
+                onMouseUp={stopMoving}
+                onMouseLeave={stopMoving}
               >
                 <span
                   className={'title'}
