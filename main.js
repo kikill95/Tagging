@@ -13,18 +13,21 @@ export default class App extends PureComponent {
       maxLength: 20,
       tags: [
         {
+          id: 'id_1',
           title: 'Lorem Ipsum',
           x: 200,
           y: 200,
           index: 0
         },
         {
+          id: 'id_2',
           title: 'Lorem',
           x: 200,
           y: 300,
           index: 1
         },
         {
+          id: 'id_3',
           title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
           x: 100,
           y: 100,

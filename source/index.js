@@ -21,6 +21,7 @@ export default class Tagging extends PureComponent {
     width: PropTypes.string,
     height: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string,
         title: PropTypes.string,
         x: PropTypes.number,
         y: PropTypes.number,
@@ -39,15 +40,17 @@ export default class Tagging extends PureComponent {
       };
 
       this.deleteTag = this.deleteTag.bind(this);
-      this.replaceTag = this.replaceTag.bind(this);
+      this.hideAllDeletes = this.hideAllDeletes.bind(this);
   }
 
-  replaceTag(tag, index) {
-    console.log('replaceTag', tag, index)
-    // this.props.onReplace(tag, index, this.props.tags.filter((tag, ind) => ind !== index));
+  hideAllDeletes() {
+    [].forEach.call(ReactDOM.findDOMNode(this.refs['tagging-wrapper']).querySelectorAll('.delete'), element => {
+      element.classList.add('hide');
+    });
   }
 
   deleteTag(tag, index) {
+    this.hideAllDeletes();
     this.setState({chosenIndex: null});
     this.props.onDelete(tag, index, this.props.tags.filter((tag, ind) => ind !== index));
   }
@@ -63,6 +66,7 @@ export default class Tagging extends PureComponent {
           }}
           ref='tagging-wrapper'
           onClick={() => {
+            this.hideAllDeletes();
             this.setState({chosenIndex: null});
           }}
         >
@@ -95,6 +99,16 @@ export default class Tagging extends PureComponent {
                   } else {
                     tag.y = parseFloat(ref.style.top) + event.pageY - (boundingClientRect.top + boundingClientRect.height / 2);
                   }
+
+                  // handle .delete position
+                  let deleteElement = ref.querySelector('.delete');
+                  if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.pageX + deleteElement.getBoundingClientRect().width) {
+                    deleteElement.classList.add('pull-left');
+                  } else {
+                    deleteElement.classList.remove('pull-left');
+                  }
+
+                  // set values
                   ref.style.left = tag.x + 'px';
                   ref.style.top = tag.y + 'px';
                 }
@@ -115,7 +129,7 @@ export default class Tagging extends PureComponent {
             return (
               <div
                 className={`tagging-element ${this.state.chosenIndex === index ? 'grab-mode' : ''}`}
-                key={index}
+                key={tag.id}
                 ref={index}
                 style={{
                   zIndex: tag.index,
@@ -124,7 +138,9 @@ export default class Tagging extends PureComponent {
                 }}
                 onClick={event => {
                   event.stopPropagation();
+                  this.hideAllDeletes();
                   this.setState({chosenIndex: index});
+                  ReactDOM.findDOMNode(this.refs[index]).querySelector('.delete').classList.remove('hide');
                 }}
                 onMouseDown={startMoving}
                 onMouseMove={processMoving}
@@ -136,17 +152,13 @@ export default class Tagging extends PureComponent {
                 >
                   {tag.title.length + 3 > this.props.maxLength ? tag.title.slice(0, this.props.maxLength - 3) + '...' : tag.title}
                 </span>
-                {
-                  this.state.chosenIndex === index ? (
-                    <span
-                      className={'delete'}
-                      onClick={event => {
-                        event.stopPropagation();
-                        this.deleteTag(tag, index);
-                      }}
-                    >X</span>
-                  ) : null
-                }
+                <span
+                  className={'delete hide'}
+                  onClick={event => {
+                    event.stopPropagation();
+                    this.deleteTag(tag, index);
+                  }}
+                >X</span>
               </div>
             );
           })}
