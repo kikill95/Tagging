@@ -1,0 +1,30 @@
+.tagging-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat; }
+  .tagging-wrapper .tagging-element {
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgba(34, 34, 34, 0.75);
+    opacity: 0.9;
+    border: 1px solid black; }
+    .tagging-wrapper .tagging-element.grab-mode {
+      cursor: -webkit-grab;
+      cursor: grab; }
+    .tagging-wrapper .tagging-element .title {
+      padding: 5px 15px;
+      display: inline-block; }
+    .tagging-wrapper .tagging-element .delete {
+      position: absolute;
+      top: -1px;
+      padding: 5px;
+      border-radius: 5px;
+      background-color: rgba(34, 34, 34, 0.75);
+      border: 1px solid black;
+      cursor: pointer; }
+      .tagging-wrapper .tagging-element .delete.pull-left {
+        right: 100%; }
+      .tagging-wrapper .tagging-element .delete.hide {
+        display: none; }
+
+/*# sourceMappingURL=main.css.map*/
