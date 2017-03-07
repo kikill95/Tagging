@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PureComponent, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import './index.scss';
 
@@ -41,6 +42,11 @@ export default class Tagging extends PureComponent {
       this.replaceTag = this.replaceTag.bind(this);
   }
 
+  replaceTag(tag, index) {
+    console.log('replaceTag', tag, index)
+    // this.props.onReplace(tag, index, this.props.tags.filter((tag, ind) => ind !== index));
+  }
+
   deleteTag(tag, index) {
     this.setState({chosenIndex: null});
     this.props.onDelete(tag, index, this.props.tags.filter((tag, ind) => ind !== index));
@@ -60,10 +66,12 @@ export default class Tagging extends PureComponent {
           }}
         >
           {this.props.tags.map((tag, index) => {
+            let canMove = false;
             return (
               <div
-                className={'tagging-element'}
+                className={`tagging-element ${this.state.chosenIndex === index ? 'grab-mode' : ''}`}
                 key={index}
+                ref={index}
                 style={{
                   zIndex: tag.index,
                   left: tag.x,
@@ -73,8 +81,52 @@ export default class Tagging extends PureComponent {
                   event.stopPropagation();
                   this.setState({chosenIndex: index});
                 }}
+                onMouseDown={event => {
+                  canMove = true;
+                }}
+                onMouseMove={event => {
+                  if (canMove && this.state.chosenIndex === index) {
+                    let ref = ReactDOM.findDOMNode(this.refs[index]);
+                    if (ref) {
+                      let boundingClientRect = ref.getBoundingClientRect(),
+                        clientRects = ref.getClientRects()[0];
+                      ref.style.cursor = '-webkit-grabbing';
+                      ref.style.cursor = 'grabbing';
+                      ref.style.left = parseFloat(ref.style.left) + event.pageX - (boundingClientRect.left + clientRects.width / 2) + 'px';
+                      ref.style.top = parseFloat(ref.style.top) + event.pageY - (boundingClientRect.top + clientRects.height / 2) + 'px';
+                    }
+                  }
+                }}
+                onMouseUp={event => {
+                  canMove = false;
+                  let ref = ReactDOM.findDOMNode(this.refs[index]);
+                  ref.style.cursor = '';
+                  this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
+                    if (ind === index) {
+                      tag.x = parseFloat(ref.style.left);
+                      tag.y = parseFloat(ref.style.top);
+                    }
+                    return tag;
+                  }));
+                }}
+                onMouseLeave={event => {
+                  canMove = false;
+                  let ref = ReactDOM.findDOMNode(this.refs[index]);
+                  ref.style.cursor = '';
+                  this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
+                    if (ind === index) {
+                      tag.x = parseFloat(ref.style.left);
+                      tag.y = parseFloat(ref.style.top);
+                    }
+                    return tag;
+                  }));
+                }}
               >
-                <span className={'title'}>{tag.title.length + 3 > this.props.maxLength ? tag.title.slice(0, this.props.maxLength - 3) + '...' : tag.title}</span>
+                <span
+                  className={'title'}
+                >
+                  {tag.title.length + 3 > this.props.maxLength ? tag.title.slice(0, this.props.maxLength - 3) + '...' : tag.title}
+                </span>
                 {
                   this.state.chosenIndex === index ? (
                     <span
