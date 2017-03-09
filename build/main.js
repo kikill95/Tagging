@@ -194,6 +194,11 @@ var Tagging = function (_PureComponent) {
                     boundingClientRect = ref.getBoundingClientRect();
                 ref.style.cursor = '-webkit-grabbing';
                 ref.style.cursor = 'grabbing';
+                // handle device touches
+                if (!event.pageX) {
+                  event.pageX = event.changedTouches[0].pageX;
+                  event.pageY = event.changedTouches[0].pageY;
+                }
                 // handle borders
                 if (wrapper.left + boundingClientRect.width / 2 > event.pageX) {
                   tag.x = 0;
