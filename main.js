@@ -10,7 +10,6 @@ export default class App extends PureComponent {
     super(props);
 
     this.state = {
-      maxLength: 20,
       tags: [
         {
           id: 'id_1',
@@ -35,6 +34,7 @@ export default class App extends PureComponent {
         }
       ]
     };
+    this.maxLength = 20;
 
     this.onReplace = this.onReplace.bind(this);
     this.onDelete = this.onDelete.bind(this);
@@ -61,7 +61,7 @@ export default class App extends PureComponent {
         tags={this.state.tags}
         onReplace={this.onReplace}
         onDelete={this.onDelete}
-        maxLength={this.state.maxLength}
+        maxLength={this.maxLength}
       />
     );
   }

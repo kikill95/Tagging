@@ -19,6 +19,7 @@ $border: rgba(0, 0, 0, 1);
     .title {
       padding: 5px 15px;
       display: inline-block;
+      user-select: none;
     }
     .delete {
       position: absolute;
