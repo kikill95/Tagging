@@ -34,7 +34,6 @@ var App = function (_PureComponent) {
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
     _this.state = {
-      maxLength: 20,
       tags: [{
         id: 'id_1',
         title: 'Lorem Ipsum',
@@ -55,6 +54,7 @@ var App = function (_PureComponent) {
         index: 1
       }]
     };
+    _this.maxLength = 20;
 
     _this.onReplace = _this.onReplace.bind(_this);
     _this.onDelete = _this.onDelete.bind(_this);
@@ -85,7 +85,7 @@ var App = function (_PureComponent) {
         tags: this.state.tags,
         onReplace: this.onReplace,
         onDelete: this.onDelete,
-        maxLength: this.state.maxLength
+        maxLength: this.maxLength
       });
     }
   }]);
@@ -183,6 +183,8 @@ var Tagging = function (_PureComponent) {
           var canMove = false;
           var startMoving = function startMoving(event) {
             canMove = true;
+            document.addEventListener('mousemove', processMoving, false);
+            document.addEventListener('touchmove', processMoving, false);
           };
           var processMoving = function processMoving(event) {
             if (canMove && _this2.state.chosenIndex === index) {
@@ -233,6 +235,8 @@ var Tagging = function (_PureComponent) {
               return tag;
             }));
             canMove = false;
+            document.removeEventListener('mousemove', processMoving);
+            document.removeEventListener('touchmove', processMoving);
           };
           return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
@@ -252,9 +256,9 @@ var Tagging = function (_PureComponent) {
                 __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]).querySelector('.delete').classList.remove('hide');
               },
               onMouseDown: startMoving,
-              onMouseMove: processMoving,
+              onTouchStart: startMoving,
               onMouseUp: stopMoving,
-              onMouseLeave: stopMoving
+              onTouchEnd: stopMoving
             },
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
               'span',

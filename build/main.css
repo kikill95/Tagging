@@ -14,7 +14,8 @@
       cursor: grab; }
     .tagging-wrapper .tagging-element .title {
       padding: 5px 15px;
-      display: inline-block; }
+      display: inline-block;
+      user-select: none; }
     .tagging-wrapper .tagging-element .delete {
       position: absolute;
       top: -1px;
