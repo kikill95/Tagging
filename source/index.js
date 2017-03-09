@@ -91,28 +91,28 @@ export default class Tagging extends PureComponent {
                   ref.style.cursor = 'grabbing';
                   // handle device touches
                   if (event.changedTouches) {
-                    event.pageX = event.changedTouches[0].pageX;
-                    event.pageY = event.changedTouches[0].pageY;
+                    event.clientX = event.changedTouches[0].clientX;
+                    event.clientY = event.changedTouches[0].clientY;
                   }
                   // handle borders
-                  if (wrapper.left + boundingClientRect.width / 2 > event.pageX) {
+                  if (wrapper.left + boundingClientRect.width / 2 > event.clientX) {
                     tag.x = 0;
-                  } else if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.pageX) {
+                  } else if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.clientX) {
                     tag.x = wrapper.width - boundingClientRect.width;
                   } else {
-                    tag.x = parseFloat(ref.style.left) + event.pageX - (boundingClientRect.left + boundingClientRect.width / 2);
+                    tag.x = parseFloat(ref.style.left) + event.clientX - (boundingClientRect.left + boundingClientRect.width / 2);
                   }
-                  if (wrapper.top + boundingClientRect.height / 2 > event.pageY) {
+                  if (wrapper.top + boundingClientRect.height / 2 > event.clientY) {
                     tag.y = 0;
-                  } else if (wrapper.top + wrapper.height - boundingClientRect.height / 2 < event.pageY) {
+                  } else if (wrapper.top + wrapper.height - boundingClientRect.height / 2 < event.clientY) {
                     tag.y = wrapper.height - boundingClientRect.height;
                   } else {
-                    tag.y = parseFloat(ref.style.top) + event.pageY - (boundingClientRect.top + boundingClientRect.height / 2);
+                    tag.y = parseFloat(ref.style.top) + event.clientY - (boundingClientRect.top + boundingClientRect.height / 2);
                   }
 
                   // handle .delete position
                   let deleteElement = ref.querySelector('.delete');
-                  if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.pageX + deleteElement.getBoundingClientRect().width) {
+                  if (wrapper.left + wrapper.width - boundingClientRect.width / 2 < event.clientX + deleteElement.getBoundingClientRect().width) {
                     deleteElement.classList.add('pull-left');
                   } else {
                     deleteElement.classList.remove('pull-left');
