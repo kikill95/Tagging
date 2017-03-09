@@ -136,6 +136,7 @@ var Tagging = function (_PureComponent) {
     _this.state = {
       chosenIndex: null
     };
+    _this.clickedTime = null;
 
     _this.deleteTag = _this.deleteTag.bind(_this);
     _this.hideAllDeletes = _this.hideAllDeletes.bind(_this);
@@ -182,11 +183,13 @@ var Tagging = function (_PureComponent) {
           // closure veriables
           var canMove = false;
           var startMoving = function startMoving(event) {
+            event.stopPropagation();
             canMove = true;
             document.addEventListener('mousemove', processMoving, false);
             document.addEventListener('touchmove', processMoving, false);
           };
           var processMoving = function processMoving(event) {
+            event.stopPropagation();
             if (canMove && _this2.state.chosenIndex === index) {
               var ref = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]);
               if (ref) {
@@ -195,7 +198,7 @@ var Tagging = function (_PureComponent) {
                 ref.style.cursor = '-webkit-grabbing';
                 ref.style.cursor = 'grabbing';
                 // handle device touches
-                if (!event.pageX) {
+                if (event.changedTouches) {
                   event.pageX = event.changedTouches[0].pageX;
                   event.pageY = event.changedTouches[0].pageY;
                 }
@@ -230,6 +233,7 @@ var Tagging = function (_PureComponent) {
             }
           };
           var stopMoving = function stopMoving(event) {
+            event.stopPropagation();
             var ref = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]);
             ref.style.cursor = '';
             _this2.props.onReplace(tag, index, _this2.props.tags.map(function (tag, ind) {
@@ -256,9 +260,17 @@ var Tagging = function (_PureComponent) {
               },
               onClick: function onClick(event) {
                 event.stopPropagation();
-                _this2.hideAllDeletes();
-                _this2.setState({ chosenIndex: index });
-                __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]).querySelector('.delete').classList.remove('hide');
+                if (_this2.state.chosenIndex !== index) {
+                  _this2.hideAllDeletes();
+                  _this2.setState({ chosenIndex: index });
+                  __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]).querySelector('.delete').classList.remove('hide');
+                }
+                if (new Date().getTime() - _this2.clickedTime < 300) {
+                  // double click / tap
+                  _this2.hideAllDeletes();
+                  _this2.setState({ chosenIndex: null });
+                }
+                _this2.clickedTime = new Date().getTime();
               },
               onMouseDown: startMoving,
               onTouchStart: startMoving,
