@@ -75,6 +75,8 @@ export default class Tagging extends PureComponent {
             let canMove = false;
             let startMoving = event => {
               canMove = true;
+              document.addEventListener('mousemove', processMoving, false);
+              document.addEventListener('touchmove', processMoving, false);
             };
             let processMoving = event => {
               if (canMove && this.state.chosenIndex === index) {
@@ -125,6 +127,8 @@ export default class Tagging extends PureComponent {
                 return tag;
               }));
               canMove = false;
+              document.removeEventListener('mousemove', processMoving);
+              document.removeEventListener('touchmove', processMoving);
             };
             return (
               <div
@@ -143,9 +147,9 @@ export default class Tagging extends PureComponent {
                   ReactDOM.findDOMNode(this.refs[index]).querySelector('.delete').classList.remove('hide');
                 }}
                 onMouseDown={startMoving}
-                onMouseMove={processMoving}
+                onTouchStart={startMoving}
                 onMouseUp={stopMoving}
-                onMouseLeave={stopMoving}
+                onTouchEnd={stopMoving}
               >
                 <span
                   className={'title'}
