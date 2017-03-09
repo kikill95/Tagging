@@ -38,6 +38,7 @@ export default class Tagging extends PureComponent {
       this.state = {
         chosenIndex: null
       };
+      this.clickedTime = null;
 
       this.deleteTag = this.deleteTag.bind(this);
       this.hideAllDeletes = this.hideAllDeletes.bind(this);
@@ -74,11 +75,13 @@ export default class Tagging extends PureComponent {
             // closure veriables
             let canMove = false;
             let startMoving = event => {
+              event.stopPropagation();
               canMove = true;
               document.addEventListener('mousemove', processMoving, false);
               document.addEventListener('touchmove', processMoving, false);
             };
             let processMoving = event => {
+              event.stopPropagation();
               if (canMove && this.state.chosenIndex === index) {
                 let ref = ReactDOM.findDOMNode(this.refs[index]);
                 if (ref) {
@@ -87,7 +90,7 @@ export default class Tagging extends PureComponent {
                   ref.style.cursor = '-webkit-grabbing';
                   ref.style.cursor = 'grabbing';
                   // handle device touches
-                  if (!event.pageX) {
+                  if (event.changedTouches) {
                     event.pageX = event.changedTouches[0].pageX;
                     event.pageY = event.changedTouches[0].pageY;
                   }
@@ -122,6 +125,7 @@ export default class Tagging extends PureComponent {
               }
             };
             let stopMoving = event => {
+              event.stopPropagation();
               let ref = ReactDOM.findDOMNode(this.refs[index]);
               ref.style.cursor = '';
               this.props.onReplace(tag, index, this.props.tags.map((tag, ind) => {
@@ -147,9 +151,17 @@ export default class Tagging extends PureComponent {
                 }}
                 onClick={event => {
                   event.stopPropagation();
-                  this.hideAllDeletes();
-                  this.setState({chosenIndex: index});
-                  ReactDOM.findDOMNode(this.refs[index]).querySelector('.delete').classList.remove('hide');
+                  if (this.state.chosenIndex !== index) {
+                    this.hideAllDeletes();
+                    this.setState({chosenIndex: index});
+                    ReactDOM.findDOMNode(this.refs[index]).querySelector('.delete').classList.remove('hide');
+                  }
+                  if (new Date().getTime() - this.clickedTime < 300) {
+                    // double click / tap
+                    this.hideAllDeletes();
+                    this.setState({chosenIndex: null});
+                  }
+                  this.clickedTime = new Date().getTime();
                 }}
                 onMouseDown={startMoving}
                 onTouchStart={startMoving}
