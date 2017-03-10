@@ -1,6 +1,6 @@
 # Tagging JS
 
-Put tags on image react component
+React component for tagging on image
 
 ## Example of usage:
 

@@ -1,6 +1,7 @@
 {
   "name": "tagging",
   "version": "0.1.0",
+  "main": "source/index.js",
   "author": "Light <kirill.gus@gmail.com>",
   "license": "MIT",
   "dependencies": {
