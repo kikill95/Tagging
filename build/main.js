@@ -265,7 +265,7 @@ var Tagging = function (_PureComponent) {
                   _this2.setState({ chosenIndex: index });
                   __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]).querySelector('.delete').classList.remove('hide');
                 }
-                if (new Date().getTime() - _this2.clickedTime < 300) {
+                if (new Date().getTime() - _this2.clickedTime < 600) {
                   // double click / tap
                   _this2.hideAllDeletes();
                   _this2.setState({ chosenIndex: null });

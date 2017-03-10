@@ -156,7 +156,7 @@ export default class Tagging extends PureComponent {
                     this.setState({chosenIndex: index});
                     ReactDOM.findDOMNode(this.refs[index]).querySelector('.delete').classList.remove('hide');
                   }
-                  if (new Date().getTime() - this.clickedTime < 300) {
+                  if (new Date().getTime() - this.clickedTime < 600) {
                     // double click / tap
                     this.hideAllDeletes();
                     this.setState({chosenIndex: null});
