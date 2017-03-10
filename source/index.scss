@@ -11,6 +11,7 @@ $border: rgba(0, 0, 0, 1);
     background-color: $background;
     opacity: 0.9;
     border: 1px solid $border;
+    cursor: pointer;
     &.grab-mode {
       z-index: 16777271 !important;
       cursor: -webkit-grab;
