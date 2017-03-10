@@ -1,3 +1,41 @@
-* {
+$background: rgba(34, 34, 34, 0.75);
+$border: rgba(0, 0, 0, 1);
 
+.tagging-wrapper {
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  .tagging-element {
+    position: absolute;
+    border-radius: 5px;
+    background-color: $background;
+    opacity: 0.9;
+    border: 1px solid $border;
+    cursor: pointer;
+    &.grab-mode {
+      z-index: 16777271 !important;
+      cursor: -webkit-grab;
+      cursor: grab;
+    }
+    .title {
+      padding: 5px 15px;
+      display: inline-block;
+      user-select: none;
+    }
+    .delete {
+      position: absolute;
+      top: -1px;
+      padding: 5px;
+      border-radius: 5px;
+      background-color: $background;
+      border: 1px solid $border;
+      cursor: pointer;
+      &.pull-left {
+        right: 100%;
+      }
+      &.hide {
+        display: none;
+      }
+    }
+  }
 }
