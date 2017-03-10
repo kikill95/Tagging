@@ -81,6 +81,7 @@ export default class Tagging extends PureComponent {
               document.addEventListener('touchmove', processMoving, false);
             };
             let processMoving = event => {
+              event.preventDefault();
               event.stopPropagation();
               if (canMove && this.state.chosenIndex === index) {
                 let ref = ReactDOM.findDOMNode(this.refs[index]);

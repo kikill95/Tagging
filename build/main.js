@@ -189,6 +189,7 @@ var Tagging = function (_PureComponent) {
             document.addEventListener('touchmove', processMoving, false);
           };
           var processMoving = function processMoving(event) {
+            event.preventDefault();
             event.stopPropagation();
             if (canMove && _this2.state.chosenIndex === index) {
               var ref = __WEBPACK_IMPORTED_MODULE_1_react_dom___default.a.findDOMNode(_this2.refs[index]);
