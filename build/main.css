@@ -7,7 +7,8 @@
     border-radius: 5px;
     background-color: rgba(34, 34, 34, 0.75);
     opacity: 0.9;
-    border: 1px solid black; }
+    border: 1px solid black;
+    cursor: pointer; }
     .tagging-wrapper .tagging-element.grab-mode {
       z-index: 16777271 !important;
       cursor: -webkit-grab;
