@@ -3,8 +3,6 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import './index.scss';
-
 export default class Tagging extends PureComponent {
   static defaultProps = {
     image: '',
@@ -137,8 +135,8 @@ export default class Tagging extends PureComponent {
                 return tag;
               }));
               canMove = false;
-              document.removeEventListener('mousemove', processMoving);
-              document.removeEventListener('touchmove', processMoving);
+              document.removeEventListener('mousemove', processMoving, false);
+              document.removeEventListener('touchmove', processMoving, false);
             };
             return (
               <div
@@ -170,7 +168,7 @@ export default class Tagging extends PureComponent {
                 onTouchEnd={stopMoving}
               >
                 <span
-                  className={'title'}
+                  className={'tagging-title'}
                 >
                   {tag.title.length + 3 > this.props.maxLength ? tag.title.slice(0, this.props.maxLength - 3) + '...' : tag.title}
                 </span>

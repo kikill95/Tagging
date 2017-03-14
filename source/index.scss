@@ -17,10 +17,11 @@ $border: rgba(0, 0, 0, 1);
       cursor: -webkit-grab;
       cursor: grab;
     }
-    .title {
+    .tagging-title {
       padding: 5px 15px;
       display: inline-block;
       user-select: none;
+      white-space: nowrap;
     }
     .delete {
       position: absolute;
