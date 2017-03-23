@@ -1,6 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
+import './index.scss';
+
 export default class Tagging extends PureComponent {
   static defaultProps = {
     image: '',
