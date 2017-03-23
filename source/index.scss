@@ -5,6 +5,7 @@ $border: rgba(0, 0, 0, 1);
   position: relative;
   overflow: hidden;
   background-repeat: no-repeat;
+  margin: 0 auto;
   .tagging-element {
     position: absolute;
     border-radius: 5px;
@@ -13,14 +14,15 @@ $border: rgba(0, 0, 0, 1);
     border: 1px solid $border;
     cursor: pointer;
     &.grab-mode {
-      z-index: 16777271 !important;
+      z-index: 16777270 !important;
       cursor: -webkit-grab;
       cursor: grab;
     }
-    .title {
+    .tagging-title {
       padding: 5px 15px;
       display: inline-block;
       user-select: none;
+      white-space: nowrap;
     }
     .delete {
       position: absolute;
@@ -34,7 +36,7 @@ $border: rgba(0, 0, 0, 1);
         right: 100%;
       }
       &.hide {
-        display: none;
+        visibility: hidden;
       }
     }
   }
