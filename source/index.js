@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { PureComponent, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
@@ -100,6 +98,7 @@ export default class Tagging extends PureComponent {
                     tag.x = wrapper.width - boundingClientRect.width;
                   } else {
                     tag.x = parseFloat(ref.style.left) + event.clientX - (boundingClientRect.left + boundingClientRect.width / 2);
+                    tag.x -= window.scrollX;
                   }
                   if (wrapper.top + boundingClientRect.height / 2 > event.clientY) {
                     tag.y = 0;
@@ -107,6 +106,7 @@ export default class Tagging extends PureComponent {
                     tag.y = wrapper.height - boundingClientRect.height;
                   } else {
                     tag.y = parseFloat(ref.style.top) + event.clientY - (boundingClientRect.top + boundingClientRect.height / 2);
+                    tag.y -= window.scrollY;
                   }
 
                   // handle .delete position
