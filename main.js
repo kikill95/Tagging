@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-import React, { PureComponent } from 'react';
-import { render } from 'react-dom';
+import React, { PureComponent } from 'react'
+import { render } from 'react-dom'
 
-import Tagging from './source/index';
+import Tagging from './source/index'
 
 export default class App extends PureComponent {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
 
     this.state = {
       tags: [
@@ -33,26 +33,26 @@ export default class App extends PureComponent {
           index: 1
         }
       ]
-    };
-    this.maxLength = 20;
+    }
+    this.maxLength = 20
 
-    this.onReplace = this.onReplace.bind(this);
-    this.onDelete = this.onDelete.bind(this);
+    this.onReplace = this.onReplace.bind(this)
+    this.onDelete = this.onDelete.bind(this)
   }
 
-  onReplace(element, index, array) {
+  onReplace (element, index, array) {
     if (array) {
-      this.setState({tags: array});
+      this.setState({tags: array})
     }
   }
 
-  onDelete(element, index, array) {
+  onDelete (element, index, array) {
     if (array) {
-      this.setState({tags: array});
+      this.setState({tags: array})
     }
   }
 
-  render() {
+  render () {
     return (
       <Tagging
         image={'./image.jpg'}
@@ -63,11 +63,11 @@ export default class App extends PureComponent {
         onDelete={this.onDelete}
         maxLength={this.maxLength}
       />
-    );
+    )
   }
 }
 
 render(
-    <App/>,
-    document.getElementById('react-app')
-);
+  <App />,
+  document.getElementById('react-app')
+)
