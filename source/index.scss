@@ -2,10 +2,11 @@ $background: rgba(34, 34, 34, 0.75);
 $border: rgba(0, 0, 0, 1);
 
 .tagging-wrapper {
+  margin: 0 auto;
   position: relative;
   overflow: hidden;
   background-repeat: no-repeat;
-  margin: 0 auto;
+  background-size: contain;
   .tagging-element {
     position: absolute;
     border-radius: 5px;

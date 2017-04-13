@@ -1,8 +1,6 @@
 import React, { PureComponent, PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 
-import './index.scss'
-
 class Tagging extends PureComponent {
   constructor (props) {
     super(props)
@@ -74,7 +72,6 @@ class Tagging extends PureComponent {
                   tag.x = wrapper.width - boundingClientRect.width
                 } else {
                   tag.x = parseFloat(ref.style.left) + event.clientX - (boundingClientRect.left + boundingClientRect.width / 2)
-                  tag.x -= window.scrollX
                 }
                 if (wrapper.top + boundingClientRect.height / 2 > event.clientY) {
                   tag.y = 0
@@ -82,7 +79,6 @@ class Tagging extends PureComponent {
                   tag.y = wrapper.height - boundingClientRect.height
                 } else {
                   tag.y = parseFloat(ref.style.top) + event.clientY - (boundingClientRect.top + boundingClientRect.height / 2)
-                  tag.y -= window.scrollY
                 }
 
                 // handle .delete position
@@ -117,7 +113,7 @@ class Tagging extends PureComponent {
           return (
             <div
               className={`tagging-element ${this.state.chosenIndex === index ? 'grab-mode' : ''}`}
-              key={tag.id}
+              key={tag.tagId}
               ref={index}
               style={{
                 zIndex: tag.index,
@@ -178,7 +174,7 @@ Tagging.propTypes = {
   width: PropTypes.string,
   height: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
+    tagId: PropTypes.string,
     title: PropTypes.string,
     x: PropTypes.number,
     y: PropTypes.number,
